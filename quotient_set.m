@@ -1,5 +1,4 @@
-function result = quotient_set(H,M, Equivalence)
-%% Input Validation
+function result = quotient_set(H,M,Equivalence)
 result  = {};
     for i=1:length(H)
         new_class = get_beta_class(H,M,H{i});

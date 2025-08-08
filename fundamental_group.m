@@ -16,6 +16,6 @@ function result = fundamental_group(H,M)
                 end
             end
         end
-        
+        result{i,j} = ab_class;
     end
 end
