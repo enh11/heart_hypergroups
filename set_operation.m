@@ -33,6 +33,7 @@ function result = set_operation(H, M, A, B)
 
     % Convert char input to single-element cell arrays
     if ischar(A)
+
         A = {A};
     end
     if ischar(B)
@@ -48,7 +49,8 @@ function result = set_operation(H, M, A, B)
     end
 
     % Ensure result is a row cell array (1×n)
-    if ~isempty(result)
-        result = reshape(result, 1, []);
-    end
+    [r,c] = size(result);
+        if ~isequal(r,1)
+        result = reshape(result,[c,r]);
+        end
 end

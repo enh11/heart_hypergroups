@@ -1,4 +1,4 @@
-function result = finite_hyperproducts_set(H, M)
+function result = hyperproducts_set(H, M)
     a_prev = {};
     a_curr = {};
     for a=H

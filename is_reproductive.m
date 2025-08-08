@@ -39,5 +39,21 @@ for a = H
         end
     end
     result = true;
-    fprintf('True\n')
 end
+%!test
+%! % Example: 'a' acts as a partial identity in this table
+%! H = {'a', 'b', 'c', 'd'};
+%! M1 = {
+%!          {'a'}, {'a', 'b'}, {'a', 'c'}, {'a', 'd'};
+%!          {'a'}, {'a', 'b'}, {'a', 'c'}, {'a', 'd'};
+%!          {'a'}, {'b'},      {'c'},      {'d'};
+%!          {'a'}, {'b'},      {'c'},      {'d'}
+%!      };
+%! assert(~is_reproductive(H,M1));
+%! H = {'a', 'b', 'c'};
+%! M = {                               
+%!      {'a'},         {'a', 'b'},    {'a', 'c'};
+%!      {'a', 'b'},    {'b'},         {'b', 'c'};
+%!      {'a','b','c'}, {'a','b','c'}, {'c'} 
+%!      };
+%! assert(is_reproductive(H,M));
