@@ -46,3 +46,17 @@ M7 = {
     {'f','g'},{'c'},{'d'},{'b'},{'a'},{'e'},{'e'};
     };
 b_hypercomposition = @(a, b) unique(H([a b]));
+fundamental_group_operation = @(a, b) unique(H([a b]));
+
+fundamental_group_operation = @(a, b) unique(H([a b]));
+%% Hv-group
+Hv_4 = {'a', 'b', 'c', 'd'};
+Mv_4 = {
+      {'a'},{'b'},{'a','c'},{'d'};
+        {'b'},{'c'},{'d'},{'a'};
+        {'a','c'},{'d'},{'a'},{'b'};
+        {'d'},{'a'},{'b'},{'c'}
+    };
+
+
+

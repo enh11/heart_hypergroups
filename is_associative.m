@@ -47,6 +47,5 @@ function result = is_associative(H, M)
         end
     end
     result = true;
-    
     %fprintf('True\n')
 end

@@ -1,4 +1,4 @@
-function result = partial_identity_check(H, M)
+function result = collect_partial_identities(H, M)
 % PARTIAL_IDENTITY_CHECK - Checks for partial identities in
 % a hyperoperation table
 %
@@ -22,9 +22,7 @@ for i = 1:length(H)
     for j = 1:length(H)
         if ismember(H{j}, M{i,j}) || ismember(H{j}, M{j,i})
         result{i} = true;
-        else 
-        result{i} = false;
-        end
+        break;
     end
 end
 end
@@ -41,4 +39,4 @@ end
 %! assert(is_associative(H,M1));
 %! assert(~is_reproductive(H,M1));
 %! expected = {true; true; true; true};
-%! assert(isequal(partial_identity_check(H, M1), expected));
+%! assert(isequal(collect_partial_identities(H, M1), expected));

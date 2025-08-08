@@ -9,7 +9,6 @@ function result = beta_relation(H, M)
                 % Avoid duplicates
                 if ~any(cellfun(@(x) isequal(x, pair), result))
                     result{end+1} = pair;
-                    
                 end
             end
         end
