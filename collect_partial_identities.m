@@ -1,31 +1,34 @@
 function result = collect_partial_identities(H, M)
-% PARTIAL_IDENTITY_CHECK - Checks for partial identities in
-% a hyperoperation table
-%
-% Inputs:
-% H - Cell array of element names (e.g., {'a','b','c'})
-% M - Hyperoperation table (cell array of cell arrays)
-%
-% Output:
-% results - Table showing partial identity status for each element
+% COLLECT_PARTIAL_IDENTITIES - Checks for partial identities
+% in a hyperoperation table
+
 %% Input Validation
 if ~iscell(H) || ~iscell(M)
     error('Both inputs must be cell arrays');
 end
-if size(M,1) ~= size(M,2) || size(M,1) ~= length(H)
+n = length(H);
+if size(M,1) ~= n || size(M,2) ~= n
     error('M must be a square matrix matching size of H');
 end
-%% Initialize Results Table
-result = repmat({false}, length(H), 1);%% Check Each Element
-for i = 1:length(H)
-    % Check left identity condition: exists x, x in e*x
-    for j = 1:length(H)
-        if ismember(H{j}, M{i,j}) || ismember(H{j}, M{j,i})
-        result{i} = true;
-        break;
-    end
+
+%% Build target cell arrays
+% For each (i,j), we need H{j} for row membership test
+Hcol = repmat(H(:)', n, 1);  % rows repeated, columns vary
+
+% For each (i,j), we need H{i} for column membership test
+Hrow = repmat(H(:), 1, n);   % columns repeated, rows vary
+
+%% Membership checks (vectorized)
+inRow = cellfun(@(c,x) ismember(x,c), M, Hcol); % H{j} in M{i,j}
+inCol = cellfun(@(c,x) ismember(x,c), M, Hrow); % H{i} in M{j,i}
+
+%% Combine conditions: partial identity = true if ANY j passes
+anyMatch = any(inRow | inCol.', 2); % logical column vector
+
+%% Convert to cell array of logicals (to match your format)
+result = num2cell(anyMatch);
 end
-end
+
 
 %!test
 %! % Example: 'a' acts as a partial identity in this table
