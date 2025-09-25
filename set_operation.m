@@ -33,24 +33,34 @@ function result = set_operation(H, M, A, B)
 
     % Convert char input to single-element cell arrays
     if ischar(A)
-
         A = {A};
     end
     if ischar(B)
         B = {B};
     end
-    result = {};  % Initialize empty cell array (0×0)
-    for a = 1:length(A)
-        for b = 1:length(B)
-            result = union(
-                result, 
-                hyperoperation(H, M, A{a}, B{b}));  % Union accumulates results
-        end
-    end
 
-    % Ensure result is a row cell array (1×n)
-    [r,c] = size(result);
-        if ~isequal(r,1)
-        result = reshape(result,[c,r]);
-        end
+    % Step 1: Compute hyperoperation for all pairs (x,y) using nested cellfun
+    % This produces a nested cell array
+    pairsUnion = cellfun(@(x) ...
+                    cellfun(@(y) hyperoperation(H, M, x, y), B, 'UniformOutput', false), ...
+                    A, 'UniformOutput', false);
+
+    % Step 2: Flatten the nested cell array into a single-level cell array
+    flatUnion = [pairsUnion{:}];  % 1 × (numel(A)*numel(B)) cell array
+
+    % Step 3: Compute the union over all elements using a functional fold
+    result = flatUnion{1};  % start with the first element
+    result = fold_union(flatUnion(2:end), result);
+
+    % Step 4: Ensure result is a row cell array
+    result = reshape(result, 1, []);
+end
+
+% Helper function: recursively fold union over a cell array
+function acc = fold_union(cells, acc)
+    if isempty(cells)
+        return;
+    end
+    acc = union(acc, cells{1});
+    acc = fold_union(cells(2:end), acc);
 end
