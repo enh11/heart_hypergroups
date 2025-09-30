@@ -1,5 +1,5 @@
 function result = beta_relation(H, M)
-   A = hyperproducts_set(H,M);
+   A = set_of_finite_hyperproducts(H,M);
     result = {};
     for i = 1:length(A)
         q = A{i};  % q is a cell array like {'a','b'}

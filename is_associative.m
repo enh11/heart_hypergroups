@@ -15,8 +15,7 @@ function result = is_associative(H, M)
 %   Output:
 %       result - Boolean value: 
 %           true if the hyperoperation is associative,
-%           false otherwise. If associativity fails, the function displays
-%           a counterexample.
+%           false otherwise. Short-circuits on the first violation.
 %
 %   Associativity is tested by checking that:
 %       (a • b) • c = a • (b • c)
@@ -24,28 +23,40 @@ function result = is_associative(H, M)
 %
 %   Example usage:
 %       H = {'a', 'b', 'c'};
-%       M = { {'a'}, {'b'}, {'c'}; ... }; % define the hyperoperation
+%       M = { {'a'}, {'b'}, {'c'}; ... }; % define the Cayley table of your hyperoperation
 %       result = is_associative(H, M);
-%
-%   Dependencies:
-%       Requires SET_OPERATION function to handle hyperoperation on sets.
-    for a = H % this is {'a'} for a in H
-        for b = H
-            for c = H
-                ab_c = set_operation(H, M, 
-                    set_operation(H, M, a, b), c);
-                a_bc = set_operation(H, M, 
-                    a, set_operation(H, M, b, c) );                                
-                if ~isequal(ab_c, a_bc)
-                    fprintf('Associativity fails at (%s, %s, %s):\n', a{1}, b{1}, c{1});
-                    fprintf('  (%s%s)%s = %s\n', a{1}, b{1}, c{1}, (strjoin(ab_c,', ')));
-                    fprintf('  %s(%s%s) = %s\n', a{1}, b{1}, c{1}, (strjoin(a_bc,', ')));
-                    result = false;
-                    return;
-                end
-            end
+
+    n = numel(H);
+
+    % Generate all triples of indices
+    [A,B,C] = ndgrid(1:n, 1:n, 1:n);
+    triples = [A(:), B(:), C(:)];
+
+    % Iterate over triples and short-circuit on failure
+    for t = 1:size(triples,1)
+        i = triples(t,1);
+        j = triples(t,2);
+        k = triples(t,3);
+
+        a = H{i};
+        b = H{j};
+        c = H{k};
+
+        if ~isequal( set_operation(H, M, set_operation(H,M,a,b), c), ...
+                     set_operation(H, M, a, set_operation(H,M,b,c)) )
+            result = false;
+            return; % short-circuit immediately
         end
     end
-    result = true;
-    %fprintf('True\n')
+
+    result = true; % all triples passed
 end
+
+%!test
+%! H3 = {'a','b','c'};
+%! M3 = {  
+%!      {'a'}, {'a', 'b'}, {'a', 'c'};
+%!      {'a','b'}, {'b'}, {'b', 'c'};
+%!      {'a','b','c'}, {'a', 'b','c'}, {'c'};
+%!      };
+%! assert(is_associative(H3, M3));
