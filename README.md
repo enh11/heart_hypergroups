@@ -9,7 +9,7 @@ A mathematical exploration of hypergroups and Hv-groups with a focus on the comp
 - [Installation](#installation)
 - [Usage](#usage)
 - [Functions](#functions)
-- [Example](#Example: Computing the Heart of a Hypergroup)
+- [Example: Computing the Heart of a Hypergroup](#example-computing-the-heart-of-a-hypergroup)
 
 ## Overview
 
@@ -22,6 +22,7 @@ This repository includes some basic functions to work with hypercompositional st
 - **Identity Elements**: Identifies identities in a hypercompositional structure, including partial identities.
 - **$\beta$ relation and transitive closure**: Computes the beta relation of a hypergroupoid.
 - **Fundamental group and heart**: Computation of the quotient hypergroupoid given by the $\beta^\star$-classes.
+- **...and other more**
 
 The primary focus is the computation of the heart of Hv-group and hypergroup. 
 
