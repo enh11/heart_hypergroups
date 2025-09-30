@@ -9,7 +9,7 @@ A mathematical exploration of hypergroups and Hv-groups with a focus on the comp
 - [Installation](#installation)
 - [Usage](#usage)
 - [Functions](#functions)
-- [Example](#example)
+- [Example](#Example: Computing the Heart of a Hypergroup)
 
 ## Overview
 
